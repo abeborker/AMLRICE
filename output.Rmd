@@ -1,0 +1,19 @@
+---
+title: "Looking at Output"
+output: html_document
+---
+
+``` {r, echo=FALSE}
+library(EBImage)
+cropped<-dir(pattern="cr")
+ii=1
+while (ii <= 10) { 
+c1<-readImage(cropped[ii])
+display(c1, method="raster")
+hist(as.numeric(c1))
+
+ii=ii+1
+}
+```
+
+Where are my plots?!

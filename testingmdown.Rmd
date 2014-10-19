@@ -1,0 +1,45 @@
+---
+title: "Ice time lapse analysis"
+output: html_document
+---
+
+# 
+
+## Getting started.
+
+Let's load up a bunch of photos
+
+```{r include=FALSE}
+library(EBImage)
+pics<-dir(pattern=".JPG")  ## Load a directory of images
+head(pics)
+p1<-readImage(pics[5]) ## Read a picture 
+fp<-flip(p1) ### Rotate
+```
+
+And let's plot it (`r paste(p1)`):
+
+```{r}
+#display(fp, method="raster")  ## Display again
+```
+
+We can convert it to grayscale (useful for analysis)
+```{r}
+colorMode(fp) = Grayscale ## switch to grayscale
+#display(fp, method="raster") ## chec via display
+```
+
+And then we want to crop it for just the ice
+```{r include=FALSE}
+ffp<-getFrame(fp,1, type='total') ### isolate frame #1
+goof<-ffp[1:2560, 830:1300] ### crop to just the ice
+display(goof, method="raster") ### display it
+```
+
+And now we can ask questions like what is the distribution of brightness across pixels
+
+```{r include=FALSE}
+library(ggplot2)
+bv<-c(as.numeric(goof))
+hist(as.numeric(goof))
+```

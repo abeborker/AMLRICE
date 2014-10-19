@@ -1,0 +1,77 @@
+---
+title: "Ice time lapse analysis"
+output: html_document
+---
+
+## Updates and _TODO_ list
+1. Scrape EXIF data, get timecoded
+1. Plot stacked
+1. Vizualization across a ransect
+1. Other metrics,
+    1. Split the field into eights, and look at % in each?
+    2. # of cells?
+
+## Getting started.
+
+Let's load up a bunch of photos
+
+```{r}
+library(EBImage)
+pics<-dir(pattern=".JPG")  ## Load a directory of images
+head(pics)
+p1<-readImage(pics[5]) ## Read a picture 
+fp<-flip(p1) ### Rotate
+```
+
+And let's plot it (`r paste(p1)`):
+
+```{r}
+display(fp, method="raster")  ## Display again
+```
+
+We can convert it to grayscale (useful for analysis)
+```{r}
+colorMode(fp) = Grayscale ## switch to grayscale
+display(fp, method="raster") ## chec via display
+```
+
+And then we want to crop it for just the ice
+```{r}
+ffp<-getFrame(fp,1, type='total') ### isolate frame #1
+goof<-ffp[1:2560, 830:1300] ### crop to just the ice
+display(goof, method="raster") ### display it
+```
+
+And now we can ask questions like what is the distribution of brightness across pixels
+
+```{r}
+library(ggplot2)
+bv<-c(as.numeric(goof))
+hist(as.numeric(goof))
+```
+
+But EBImage is fancy, and maybe we want to do some pre-processing of the image, here
+```{r}
+flo = makeBrush(21, shape='disc', step=FALSE)^2
+flo = flo/sum(flo)
+iceflo = filter2(goof, flo)
+fhi =  matrix(1, nc=3, nr=3)
+fhi[2,2] = -8
+icefhi = filter2(goof, fhi)
+display(iceflo, method="raster") ### Low pass filter
+display(icefhi, method="raster") ### High pass filter
+```
+Or we can just do a contrast adjustment
+ORIGINAL
+```{r}
+display(goof, method="raster")
+```
+Contrast (*2)
+```{r}
+display(goof*2, method="raster")
+```
+
+__TODO__ a panel that shows ice, and a histogram of brightness values simultaneously for review.  _TODO_ Do some multiple plotting in base r with histo and raster display
+
+## Contact
+Abe Borker (aborker@ucsc.edu)
