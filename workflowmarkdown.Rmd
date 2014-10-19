@@ -1,6 +1,6 @@
 ---
 title: "justcropped"
-output: html_document
+output: word_document
 ---
 
 # Workflow

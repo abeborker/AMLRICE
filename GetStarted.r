@@ -2,7 +2,6 @@
 ### October 7th, 2014
 library(EBImage)
 pics<-dir(pattern=".JPG")  ## Load a directory of images
-
 i=1
 while (i <= length(pics)) { 
   p<-readImage(pics[i]) ## Read a picture 
@@ -19,6 +18,8 @@ while (i <= length(pics)) {
   i=i+1
 }
 
+
+### LOADS the cropped images
 library(EBImage)
 library(ggplot2)
 cropped<-dir(pattern="cr") ## Just the cropped images
@@ -42,12 +43,7 @@ while (ii <= length(cropped)) {
   outputb[ii]<-(sum((as.numeric(c1)>.99)*1))/length(as.numeric(c1))
   ii=ii+1
 }
-str(p1)
-ii
 crsums<-data.frame(names=names, percwhite=outputb, means=means, sds=sds, vars=vars, sample=seq(1:50))
-library(ggplot2)
-ggplot(data=crsums, aes(x=sample, y=percwhite)) + geom_line() + ylim(0,1) + geom_smooth()
-display(c1)
 
 
 ## READ the exif data
@@ -56,6 +52,9 @@ finfo<-file.info(pics)
 final<-cbind(crsums,finfo)
 head(final)
 
+
+## DOES SOME PLOTTING
+library(ggplot2)
 ggplot(data=final, aes(x=mtime, y=percwhite)) + geom_line() + ylim(0,1) + geom_smooth()
 ggplot(data=final, aes(x=mtime, y=means)) + geom_line() + ylim(0,1) + geom_smooth()
 ggplot(data=final, aes(x=mtime, y=sds)) + geom_line() + ylim(0,1) + geom_smooth()
