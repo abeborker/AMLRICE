@@ -55,11 +55,12 @@ head(final)
 
 ## DOES SOME PLOTTING
 library(ggplot2)
-ggplot(data=final, aes(x=mtime, y=percwhite)) + geom_line() + ylim(0,1) + geom_smooth()
-ggplot(data=final, aes(x=mtime, y=means)) + geom_line() + ylim(0,1) + geom_smooth()
-ggplot(data=final, aes(x=mtime, y=sds)) + geom_line() + ylim(0,1) + geom_smooth()
-ggplot(data=final, aes(x=mtime, y=vars)) + geom_line() + ylim(0,1) + geom_smooth()
+a1<-ggplot(data=final, aes(x=mtime, y=percwhite)) + geom_line() + ylim(0,1) + geom_smooth()
+a2<-ggplot(data=final, aes(x=mtime, y=means)) + geom_line() + ylim(0,1) + geom_smooth()
+a3<-ggplot(data=final, aes(x=mtime, y=sds)) + geom_line() + ylim(0,1) + geom_smooth()
+a4<-ggplot(data=final, aes(x=mtime, y=vars)) + geom_line() + ylim(0,1) + geom_smooth()
 
+a1+a2
 
 cropped[ii]
 head(crsums)
